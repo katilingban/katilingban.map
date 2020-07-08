@@ -11,7 +11,7 @@ function(input, output, session) {
       addTiles(
         urlTemplate = mapbox.leShine,
         attribution = "Map by <a href='https://www.mapbox.com/'>Mapbox</a>") %>%
-      addMiniMap(tile = mapbox.satellite,
+      addMiniMap(tile = mapbox.iceCream,
                  position = "bottomleft",
                  toggleDisplay = TRUE) %>%
       addMarkers(lng = kb_experience$lon,
