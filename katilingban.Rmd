@@ -1,20 +1,49 @@
 ---
 title: "Where we work"
-output: flexdashboard::flex_dashboard
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
-library(leaflet)
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
+                      error = FALSE)
 
+library(leaflet)
+library(katilingban)
+library(ggmap)
+library(dplyr)
+
+register_google(key = "AIzaSyAAanTWLsue3MZLuaulPI6CUNR_3_toDk8")
+auth_google(appname = "googledrive", 
+            key = "AIzaSyCLqJLtwAFh-Y8oFstidN5tHWtpZrIkuhc", 
+            secret = "maoUbkK6q8tz2KNWvHfhcJDV")
+
+## Create kb dataset
+kb_experience <- read_kb_experience() %>%
+  get_kb_coordinates() %>%
+  create_popup_content() %>%
+  filter(!is.na(lon))
+
+## Base layer
 mapbox.leShine <- "https://api.mapbox.com/styles/v1/ernestguevarra/cjdlr8pvl0xiv2sqvq1evk1pl/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZXJuZXN0Z3VldmFycmEiLCJhIjoiejRRLXlZdyJ9.sqS1zi0rDH5CIzvcn9SXSg"
+
+mapbox.satellite <- "https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZXJuZXN0Z3VldmFycmEiLCJhIjoiejRRLXlZdyJ9.sqS1zi0rDH5CIzvcn9SXSg"
 ```
 
 
 ```{r katilingbanMap, echo = FALSE}
-leaflet() %>%
+leaflet(width = "100%", height = "600px", 
+        options = leafletOptions(minZoom = 2)) %>%
   addTiles(
     urlTemplate = mapbox.leShine,
-    attribution = "Map by <a href='https://www.mapbox.com/'>Mapbox</a>"
-  ) %>%
-  setView(lat = 0, lng = 0, zoom = 2)
+    attribution = "Map by <a href='https://www.mapbox.com/'>Mapbox</a>") %>%
+  addMiniMap(tile = mapbox.satellite,
+             position = "bottomleft",
+             toggleDisplay = TRUE) %>%
+  addMarkers(lng = kb_experience$lon,
+             lat = kb_experience$lat,
+             popup = kb_experience$tooltip,
+             clusterOptions = markerClusterOptions()) %>%
+  setView(lng = 0, lat = 25, zoom = 2)
 ```
