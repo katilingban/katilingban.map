@@ -4,7 +4,7 @@
 #
 ################################################################################
 ## Set navbar
-navbarPage(title = "",
+fluidPage(
   ## Header HTML
   div(class = "outer",
     ## Header HTML
