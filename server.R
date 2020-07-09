@@ -11,9 +11,9 @@ function(input, output, session) {
       addTiles(
         urlTemplate = mapbox.leShine,
         attribution = "Map by <a href='https://www.mapbox.com/'>Mapbox</a>") %>%
-      addMiniMap(tile = mapbox.iceCream,
-                 position = "bottomleft",
-                 toggleDisplay = TRUE) %>%
+      #addMiniMap(tile = mapbox.iceCream,
+      #           position = "bottomleft",
+      #           toggleDisplay = TRUE) %>%
       addMarkers(lng = kb_experience$lon,
                  lat = kb_experience$lat,
                  popup = kb_experience$tooltip,
